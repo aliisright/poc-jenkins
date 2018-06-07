@@ -1,4 +1,4 @@
-maPipe {
+pipeline {
     stages {
         stage('build') {
             steps {
