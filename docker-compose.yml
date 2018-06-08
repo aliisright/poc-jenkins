@@ -5,7 +5,7 @@ services:
     volumes:
       - ./:/var/www/html
     ports:
-      - "8882:80"
+      - "8881:80"
     links:
       - app
 
