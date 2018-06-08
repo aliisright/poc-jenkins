@@ -20,9 +20,3 @@ services:
     environment:
       MYSQL_DATABASE: db
       MYSQL_ROOT_PASSWORD: root
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8880:8880
