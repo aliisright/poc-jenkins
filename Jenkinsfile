@@ -1,6 +1,7 @@
 node('master') {
     try {
         stage('build') {
+            sh "ls"
             sh "composer install"
             sh "cp .env.example .env"
             sh "php artisan key:generate"
