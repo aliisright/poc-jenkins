@@ -3,10 +3,10 @@ node('master') {
         stage('docker') {
             checkout scm
             sh "docker-compose down"
-            sh "docker-compose up -d"
-            sh "docker-compose exec php cp .env.example .env"
-            sh "docker-compose exec php composer install"
-            sh "docker-compose exec php php artisan key:generate"
+            sh "docker-compose -t up -d"
+            sh "docker-compose -t exec php cp .env.example .env"
+            sh "docker-compose -t exec php composer install"
+            sh "docker-compose -t exec php php artisan key:generate"
         }
 
         stage('test') {
