@@ -10,7 +10,7 @@ node('master') {
         }
 
         stage('test') {
-            sh "docker-compose exec -T app phpunit"
+            sh "docker-compose exec -T app ./vendor/bin/phpunit"
         }
 
         /*stage('deploy') {
