@@ -1,6 +1,6 @@
 node('master') {
     try {
-        stage('docker') {
+        stage('build') {
             checkout scm
             sh "docker-compose up -d"
             sh "docker-compose exec -T app cp .env.example .env"

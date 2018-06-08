@@ -5,3 +5,5 @@ RUN curl -sS https://getcomposer.org/installer | \
 WORKDIR /app
 COPY . ./
 RUN composer install --no-dev --no-interaction -o
+
+RUN wget -O /usr/local/bin/phpunit -q https://phar.phpunit.de/phpunit.phar
