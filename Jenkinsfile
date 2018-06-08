@@ -1,14 +1,14 @@
 node('master') {
     try {
         stage('build') {
-            sh "ls"
-            sh "composer install"
-            sh "cp .env.example .env"
-            sh "php artisan key:generate"
+            sh "docker-compose up -d"
+            sh "docker-compose exec php cp .env.example .env"
+            sh "docker-compose exec php composer install"
+            sh "docker-compose exec php php artisan key:generate"
         }
 
         stage('test') {
-            sh "./vendor/bin/phpunit"
+            sh "docker-compose exec php ./vendor/bin/phpunit"
         }
 
         /*stage('deploy') {
