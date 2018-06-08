@@ -1,7 +1,7 @@
 node('master') {
     try {
         stage('build') {
-            sh "cd poc-jenkins-master"
+            sh "cd poc-jenkins"
             sh "docker-compose up -d"
             sh "docker-compose exec php cp .env.example .env"
             sh "docker-compose exec php composer install"
