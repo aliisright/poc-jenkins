@@ -13,7 +13,7 @@ services:
       build:
         context: ./
         dockerfile: app.dockerfile
-      working_dir: /var/www
+      working_dir: /var/www/html
       volumes:
         - ./:/var/www/html
       environment:
