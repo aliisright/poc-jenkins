@@ -1,6 +1,7 @@
 node('master') {
     try {
         stage('build') {
+            checkout scm
             sh "docker-compose up -d"
             sh "docker-compose exec php cp .env.example .env"
             sh "docker-compose exec php composer install"
