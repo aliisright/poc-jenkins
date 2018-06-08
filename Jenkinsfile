@@ -1,6 +1,6 @@
 node('master') {
     try {
-        stage('build') {
+        stage('docker') {
             checkout scm
             sh "docker-compose down"
             sh "docker-compose up -d"
