@@ -1,6 +1,7 @@
 node('master') {
     try {
         stage('build') {
+            sh "git clone https://github.com/aliisright/poc-jenkins.git"
             sh "docker-compose up -d"
             sh "docker-compose exec php cp .env.example .env"
             sh "docker-compose exec php composer install"
