@@ -5,8 +5,8 @@ node('master') {
             sh "docker-compose down"
             sh "docker-compose up -d"
             sh "docker-compose exec -T php cp .env.example .env"
-            sh "docker-compose exec -T php composer self-update"
-            sh "docker-compose exec -T php composer install --no-interaction"
+            sh "docker-compose exec -T php ls"
+            sh "docker-compose exec -T php composer install"
             sh "docker-compose exec -T php php artisan key:generate"
         }
 
