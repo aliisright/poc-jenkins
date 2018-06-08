@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-alpine
+FROM php:7.2-fpm-alpine
 
 RUN apt-get update -yqq \
     && apt-get install git zlib1g-dev libsqlite3-dev -y \
@@ -8,4 +8,11 @@ RUN apt-get update -yqq \
 
 RUN curl -fsSL https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
-    && composer global require phpunit/phpunit ^6.2 --no-progress --no-scripts --no-interaction
+    && composer global require phpunit/phpunit ^7.0 --no-progress --no-scripts --no-interaction
+
+RUN pecl install xdebug \
+    && echo 'zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so' > \
+        /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && php -m | grep xdebug
+
+ENV PATH /root/.composer/vendor/bin:$PATH
