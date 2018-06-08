@@ -1,4 +1,4 @@
-node('master') {
+node('poc-jenkins') {
     try {
         stage('build') {
             sh "docker-compose up -d"
