@@ -2,7 +2,7 @@ node('master') {
     try {
         stage('build') {
             checkout scm
-            sh "/usr/local/bin/docker-compose up -d"
+            sh "./docker-compose up -d"
             sh "docker-compose exec -T app cp .env.example .env"
             sh "docker-compose exec -T app composer install"
             sh "docker-compose exec -T app php artisan key:generate"
