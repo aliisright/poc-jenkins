@@ -2,7 +2,7 @@ node('master') {
     try {
         stage('build') {
             checkout scm
-            sh "sudo yum install docker-ce"
+            sh "yum install docker-ce"
             sh "docker-compose up -d"
             sh "docker-compose exec -T app cp .env.example .env"
             sh "docker-compose exec -T app composer install"
