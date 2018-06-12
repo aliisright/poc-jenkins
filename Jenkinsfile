@@ -2,7 +2,7 @@ node('master') {
     try {
         stage('build') {
             checkout scm
-            sh "docker run -v /var/run/docker.sock:/var/run/docker.sock"
+            sh "docker run -v /var/run/docker.pid:/var/run/docker.pid"
             sh "docker-compose up -d"
             sh "docker-compose exec -T app cp .env.example .env"
             sh "docker-compose exec -T app composer install"
