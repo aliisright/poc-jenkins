@@ -7,6 +7,7 @@
 PREV_COMMIT=$1
 POST_COMMIT=$2
 
+<<<<<<< HEAD
 GIT_DIR=$(git rev-parse --git-dir)
 GIT_DIR_MERGE="$GIT_DIR"/rebase-merge
 GIT_DIR_APPLY="$GIT_DIR"/rebase-apply
@@ -52,3 +53,14 @@ do
         $FUNC
     fi
 done
+=======
+NOCOLOR='\e[0m'
+REDCOLOR='\e[37;41m'
+
+if [[ -f composer.lock ]]; then
+    DIFF=`git diff --shortstat $PREV_COMMIT..$POST_COMMIT composer.lock`
+    if [[ $DIFF != "" ]]; then
+        echo -e "$REDCOLOR composer.lock has changed. You must run composer install$NOCOLOR"
+    fi
+fi
+>>>>>>> 62148d1a6a069cc76baa9350f5bc21c5a76c4df5
