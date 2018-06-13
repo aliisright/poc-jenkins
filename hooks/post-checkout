@@ -2,9 +2,6 @@
 
 # thanks http://www.jenssegers.be/blog/46/deploying-websites-with-git-and-composer-
 
-# replace folder
-cd "`dirname $0`/../../application/config"
-
 # Check if a composer.json file is present
 if [ -f composer.json ]; then
 
