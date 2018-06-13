@@ -5,4 +5,5 @@ do
   #copying customized hooks files into git hooks folder
   echo "adding customized git hook: $(echo $filename)"
   cp "$PWD"/hooks/"$filename" "$PWD"/.git/hooks/"$filename"
+  chmod +x "$PWD"/.git/hooks/"$filename"
 done
