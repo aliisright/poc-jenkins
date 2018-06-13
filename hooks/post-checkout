@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # thanks http://www.jenssegers.be/blog/46/deploying-websites-with-git-and-composer-
-
+echo "toto"
 # Check if a composer.json file is present
 if [ -f composer.json ]; then
 
