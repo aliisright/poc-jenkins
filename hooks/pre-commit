@@ -6,7 +6,6 @@
 # use: git commit --no-verify
 
 # This will check only staged files to be commited.
-echo "dsdsd"
 filenames=($(git diff --staged --name-only HEAD))
 
 # This will set text to red in terminal.
