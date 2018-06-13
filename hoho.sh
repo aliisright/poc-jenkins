@@ -6,3 +6,5 @@ do
   echo "adding customized git hook: $(echo $filename)"
   cp "$PWD"/hooks/"$filename" "$PWD"/.git/hooks/"$filename"
 done
+
+git config core.hooksPath "$PWD"/hooks/
