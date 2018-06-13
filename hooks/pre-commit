@@ -1,15 +1,87 @@
-#!/usr/bin/env bash
-# MIT © Sindre Sorhus - sindresorhus.com
+#!/bin/bash
+# Pre-commit Git hook.
+# Runs PHP Codestyle checker and fixer whenever errors are found on PHP files.
+#
+# If you absolutely must commit without testing,
+# use: git commit --no-verify
 
-# git hook to run a command after `git pull` if a specified file was changed
-# Run `chmod +x post-merge` to make it executable then put it into `.git/hooks/`.
+# This will check only staged files to be commited.
+filenames=($(git diff --staged --name-only HEAD))
 
-changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)"
+# This will set text to red in terminal.
+text_red=`tput setaf 1`
+# This will set the text to green in terminal.
+text_green=`tput setaf 2`
+# This will set the text to yellow in terminal.
+text_yellow=`tput setaf 3`
+# This will reset the terminal text to normal.
+text_reset=`tput sgr0`
 
-check_run() {
-	echo "$changed_files" | grep --quiet "$1" && eval "$2"
-}
+number_files_changed="${#filenames[@]}"
+errors_found=0
+files_fixed=0
 
-# Example usage
-# In this example it's used to run `npm install` if package.json changed
-check_run package.json "npm install"
+# known php_codesniffer files where it looks for configuration in project root
+phpcs_file=./phpcs.xml
+phpcs_dist_file=./phpcs.xml.dist
+phpcbf_bin=$(find . -path "*/vendor/squizlabs/php_codesniffer/bin/phpcbf")
+phpcs_bin=$(find . -path "*/vendor/squizlabs/php_codesniffer/bin/phpcs")
+
+# Use PSR2 standard as default only when no phpcs file is present in project root
+if [[ ! -e "$phpcs_file" && ! -e "$phpcs_dist_file" ]]; then
+    default_standard=--standard=PSR2
+else
+    default_standard=""
+fi
+
+if [[ $number_files_changed > 0 ]];
+then
+    echo "$number_files_changed files were changed, running php-cs-fixer"
+    # Run throw changed files.
+    for i in "${filenames[@]}"
+    do
+        if [[ $i == *.php ]] && [ -f $i ];
+        then
+            # Run PHP Code Style Check and detect in the fixer was not able to fix code.
+            codestyle_errors_before_autofix="$($phpcs_bin $default_standard $i)"
+            check_result_before=$?
+
+            if [ ${check_result_before} -eq 0 ];
+            then
+                # No errors to fix, skip to next file.
+                continue
+            fi
+
+            # Run PHP Code Beautifier and Fixer first.
+            output="$($phpcbf_bin $default_standard $i)"
+
+            # Run PHP Code Style Check and detect in the fixer was not able to fix code.
+            codestyle_errors="$($phpcs_bin $default_standard $i)"
+            check_result_after_autofix=$?
+
+            if [ ${check_result_after_autofix} -eq 0 ];
+            then
+                # File had some issues but they were automatically fixed.
+                echo "${text_green}Codestyle errors were fixed automatically! add those changes and commit again.${text_reset}"
+                ((files_fixed++))
+            else
+                echo "$codestyle_errors"
+                ((errors_found++))
+            fi
+        fi
+    done
+fi
+
+if [[ ${errors_found} == 0 ]]
+then
+    if [[ ${files_fixed} > 0 ]]
+    then
+        echo "${text_yellow}PHP Codestyle checked and fixed your files for you, add those changes and commit again.${text_reset}"
+        exit 1;
+    fi
+    echo "${text_green}PHP Codestyle check passed successfully.${text_reset}"
+    exit 0;
+else
+    echo "${text_red}PHP Codestyle found errors or warnings and could not fix them! Try to fix them and commit again.${text_reset}"
+    exit 1;
+fi
